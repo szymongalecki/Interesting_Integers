@@ -1,9 +1,11 @@
-// Mutex version
+// Concurrent brute-force with Mutex
+
 // Test 1
 // 1
 // 1 1000000
 // Case #1: 534358
 // 210.738583ms
+
 // Test 2
 // 1
 // 1 1000000000
@@ -15,13 +17,11 @@ package main
 import (
 	"fmt"
 	"sync"
-	"time"
 )
 
 func main() {
 	var m sync.Mutex
 	var wg sync.WaitGroup
-
 	var t int
 	fmt.Scanf("%d", &t)
 
@@ -29,7 +29,6 @@ func main() {
 		var interesting int
 		var a, b int
 		fmt.Scanf("%d %d", &a, &b)
-		start := time.Now()
 		for num := a; num < b+1; num++ {
 			wg.Add(1)
 			go func(n int) {
@@ -51,9 +50,7 @@ func main() {
 			}(num)
 		}
 		wg.Wait()
-		duration := time.Since(start)
 		fmt.Printf("Case #%d: %d\n", test, interesting)
-		fmt.Println(duration)
 	}
 
 }
