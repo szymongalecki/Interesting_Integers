@@ -1,9 +1,11 @@
-// Blocking channel version
+// Concurrent brute-force with blocking channel
+
 // Test 1
 // 1
 // 1 1000000
 // Case #1: 525050
 // 461.72ms
+
 // Test 2
 // 1
 // 1 1000000000
@@ -27,7 +29,6 @@ func main() {
 	for test := 1; test < t+1; test++ {
 		var a, b int
 		fmt.Scanf("%d %d", &a, &b)
-		start := time.Now()
 		for num := a; num < b+1; num++ {
 			wg.Add(1)
 			go func(n int) {
@@ -52,13 +53,13 @@ func main() {
 				select {
 				case <-interesting:
 					count++
+				// This is sketchy and incorrect, no assumption about timing should be taken
+				case <-time.After(100 * time.Millisecond):
+					break
 				}
 			}
 		}()
 		wg.Wait()
-		duration := time.Since(start)
 		fmt.Printf("Case #%d: %d\n", test, count)
-		fmt.Println(duration)
 	}
-
 }
