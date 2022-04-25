@@ -1,9 +1,11 @@
-// Atomic add version
+// Concurrent brute-force with atomic add
+
 // Test 1
 // 1
 // 1 1000000
 // Case #1: 534358
 // 202.710917ms
+
 // Test 2
 // 1
 // 1 1000000000
@@ -16,7 +18,6 @@ import (
 	"fmt"
 	"sync"
 	"sync/atomic"
-	"time"
 )
 
 func main() {
@@ -28,7 +29,6 @@ func main() {
 		var interesting int32
 		var a, b int
 		fmt.Scanf("%d %d", &a, &b)
-		start := time.Now()
 		for num := a; num < b+1; num++ {
 			wg.Add(1)
 			go func(n int) {
@@ -48,9 +48,6 @@ func main() {
 			}(num)
 		}
 		wg.Wait()
-		duration := time.Since(start)
 		fmt.Printf("Case #%d: %d\n", test, interesting)
-		fmt.Println(duration)
 	}
-
 }
